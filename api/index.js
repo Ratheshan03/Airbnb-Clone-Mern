@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = require("./models/User.js");
 const CookieParser = require("cookie-parser");
+const imageDownloader = require("image-downloader");
+
 require("dotenv").config();
 const app = express();
 
@@ -13,7 +15,7 @@ const jwtSecret = process.env.JWT_SECRET;
 
 app.use(express.json());
 app.use(CookieParser());
-
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
@@ -26,7 +28,7 @@ mongoose.connect(process.env.MONGO_URL);
 
 // Routes
 app.get("/api/test", (req, res) => {
-  res.json("Testing Done");
+  res.json("Testing Done..");
 });
 
 app.post("/api/register", async (req, res) => {
@@ -85,6 +87,16 @@ app.get("/api/profile", (req, res) => {
 
 app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json(true);
+});
+
+app.post("/api/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "Photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.json(newName);
 });
 
 app.listen(3001);
