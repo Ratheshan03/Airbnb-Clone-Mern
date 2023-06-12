@@ -1,15 +1,14 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../UserContext";
-import { Navigate, Link, useParams } from "react-router-dom";
+import { UserContext } from "../UserContext.jsx";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import PlacesPage from "./PlacesPage";
 import AccountNav from "../AccountNav";
 
 export default function ProfilePage() {
-  const { ready, user, setUser } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
+  const { ready, user, setUser } = useContext(UserContext);
   let { subpage } = useParams();
-
   if (subpage === undefined) {
     subpage = "profile";
   }
@@ -42,7 +41,6 @@ export default function ProfilePage() {
           </button>
         </div>
       )}
-
       {subpage === "places" && <PlacesPage />}
     </div>
   );
