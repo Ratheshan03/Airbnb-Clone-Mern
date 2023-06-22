@@ -1,1 +1,2 @@
-# Airbnb-Clone-Mern
+# Airbnb-Clone
+- MERN STACK APPLICATION
